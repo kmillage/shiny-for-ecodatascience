@@ -33,7 +33,7 @@ class: center, middle
 
 --
 
-- `shinydashboard`: Keeping things organized;
+- Appearance & Organization (`shinydashboard` + more): Keeping things organized;
 
 --
 
@@ -266,7 +266,7 @@ These two functions can read reactive values and call reactive expressions, and 
 
 `renderPlot()`, `renderText()`, `renderUI()`, `renderPrint()`, `renderImage()`, `renderTable()`, `renderDataTable()`
 
-These functions create reactive versions of their namesakes that are suitable for assigning to an `output` slot. They have cooresponding output functions in the UI that are used to display those items.  
+These functions create reactive versions of their namesakes that are suitable for assigning to an `output` slot. They have corresponding output functions in the UI that are used to display those items.  
 
 ---
 
