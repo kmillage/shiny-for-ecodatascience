@@ -1,6 +1,6 @@
 # Shiny for EcoDataScience
 
-You can view the presentation for this talk here. 
+You can view the presentation for this talk [here](https://kmillage.github.io/shiny-for-ecodatascience/presentations/shiny_for_ecodatascience). 
 
 If you want to follow along (or play with the apps contained in this repository), you'll need to have the following packages installed: 
 
