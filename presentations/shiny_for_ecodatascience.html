@@ -7,7 +7,13 @@
     <link href="libs/remark-css/default.css" rel="stylesheet" />
     <link href="libs/remark-css/default-fonts.css" rel="stylesheet" />
     <script src="libs/htmlwidgets/htmlwidgets.js"></script>
+    <script src="libs/plotly-binding/plotly.js"></script>
+    <script src="libs/typedarray/typedarray.min.js"></script>
     <script src="libs/jquery/jquery.min.js"></script>
+    <link href="libs/crosstalk/css/crosstalk.css" rel="stylesheet" />
+    <script src="libs/crosstalk/js/crosstalk.min.js"></script>
+    <link href="libs/plotly-htmlwidgets-css/plotly-htmlwidgets.css" rel="stylesheet" />
+    <script src="libs/plotly-main/plotly-latest.min.js"></script>
     <link href="libs/leaflet/leaflet.css" rel="stylesheet" />
     <script src="libs/leaflet/leaflet.js"></script>
     <link href="libs/leafletfix/leafletfix.css" rel="stylesheet" />
@@ -15,13 +21,6 @@
     <script src="libs/Proj4Leaflet/proj4leaflet.js"></script>
     <link href="libs/rstudio_leaflet/rstudio_leaflet.css" rel="stylesheet" />
     <script src="libs/leaflet-binding/leaflet.js"></script>
-    <link href="libs/datatables-css/datatables-crosstalk.css" rel="stylesheet" />
-    <script src="libs/datatables-binding/datatables.js"></script>
-    <link href="libs/dt-core/css/jquery.dataTables.min.css" rel="stylesheet" />
-    <link href="libs/dt-core/css/jquery.dataTables.extra.css" rel="stylesheet" />
-    <script src="libs/dt-core/js/jquery.dataTables.min.js"></script>
-    <link href="libs/crosstalk/css/crosstalk.css" rel="stylesheet" />
-    <script src="libs/crosstalk/js/crosstalk.min.js"></script>
   </head>
   <body>
     <textarea id="source">
@@ -31,7 +30,7 @@ class: center, middle, inverse, title-slide
 ## EcoDataScience session
 ### Kat Millage
 ### emLab
-### 2020/12/11
+### 2020/12/1
 
 ---
 
@@ -42,7 +41,7 @@ class: center, middle
 
 # Why? 
 
-### To provide general tips and suggestions to help make your Shiny apps more efficient
+### To provide general tips and suggestions to help you get started with Shiny (efficiently)
 ### To demonstrate cool functionalities that will help make your Shiny apps more effective communication tools
 
 ---
@@ -97,7 +96,7 @@ class: inverse, center, middle
 
 # The Basics
 
-## basic-app
+## Example: basic-app
 
 ---
 background-image: url(https://comic.browserling.com/extra-front-end-back-end.png)
@@ -144,6 +143,8 @@ You'll predominately use three types of functions to define your user-interface:
 # **`ui.R`** / `server.R`
 ## Structural UI Functions
 
+--
+
 The highest layer of UI construction is dictated by the behavior of the page. The basic `shiny` package includes three main page functions: `basicPage()`, `fixedPage()`, **`fluidPage()`**
 
 --
@@ -154,13 +155,23 @@ The second highest level of UI construction defines the layout of objects on the
 
 There are also a number of lower level UI construction functions. These create panels, rows, and columns within your specified layout. Some of these can be used within any layout function (e.g., `tabsetPanel()`, `wellPanel()`, `titlePanel()`, `conditionalPanel()`, `aboslutePanel()`, `column()`), while others are specific to a particular layout function (e.g., `sidebarPanel()`, `mainPanel()`, `inputPanel()`, `fluidRow()`). 
 
+--
+
+More info on the basic Shiny layouts can be found [here](https://shiny.rstudio.com/articles/layout-guide.html). 
+
 ---
 # **`ui.R`** / `server.R`
 ## Widgets
 
+--
+
 These are the functions that create the fun little buttons and sliders that your user gets to click on and drag. The values returned by these functions make up the `input` object that is passed to your `server.R` file.  
 
+--
+
 There are a lot of them. They are all defined as `[xxx]Input()`. The [Shiny Widget Gallery](https://shiny.rstudio.com/gallery/widget-gallery.html) does a nice job of displaying all of the basic widgets and the values they return.
+
+--
 
 Each widget is assigned an `inputId` - this is how your widgets will be identified in the server logic. *Knowing the format of the value returned by your widgets is important!*
 
@@ -168,8 +179,9 @@ Each widget is assigned an `inputId` - this is how your widgets will be identifi
 # **`ui.R`** / `server.R`
 ## Output Functions
 
-These are the functions that define the outputs that should be visible in your app. Think of these as placeholders for the things you want to display. These can be plots, value, text, images, tables, or really anything you can define with HTML. The basic output functions are as follows: 
+--
 
+These are the functions that define the outputs that should be visible in your app. Think of these as placeholders for the things you want to display. These can be plots, value, text, images, tables, or really anything you can define with HTML. The basic output functions are as follows: 
 - `plotOutput()`
 - `textOutput()`
 - `uiOutput()`
@@ -177,6 +189,8 @@ These are the functions that define the outputs that should be visible in your a
 - `imageOutput()`
 - `tableOutput()`
 - `dataTableOutput()`
+
+--
 
 Each output function is assigned an `outputId` - this is how your function knows which variable from the `output` object to include here. 
 
@@ -316,27 +330,106 @@ Great resources on the Shiny basics:
 - [Reactivity, Pt. 2](https://rstudio.com/resources/shiny-dev-con/reactivity-pt-2/): Joe Cheng, Shiny Dev Con 2016
 
 ---
-
 class: inverse, center, middle
 
 # The Basics
 
-## 01-basics
+## Example: 01-basics
 
 ---
 class: inverse, center, middle
 
+# Section 2: Appearance &amp; Organization (`shinydashboard` + more)
+
+---
+# Why? 
+
+Let's face it - the basic `shiny` layouts are boring and they don't look very nice. They're great if you just want to build a quick Shiny app to explore some data or results, but they don't really cut it for most applications.&lt;sup&gt;1&lt;/sup&gt;
+
+.footnote[
+[1] Unless you want to learn `HTML`, `CSS`, and `JavaScript`
+]
+
+--
+Luckily, there are some nice packages that will make your Shiny apps look nicer and be easier to use without having to learn more coding languages. There are MANY packages out there for shiny, but I've found a lot of them to be underwhelming. However, I want to highlight the three that I find myself using in almost every app I make. 
+
+--
+- `shinydashboard`
+
+--
+- `shinyjs`
+
+--
+- `shinyWidgets`
+
+---
 # `shinydashboard`
 
+[NEED]
+
+---
+# `shinyjs`
+
+[NEED]
+
+---
+# `shinyWidgets`
+
+[NEED]
+
+---
+# Custom Stylesheets
+
+If you really want to change up the appearance of your Shiny app, you can use CSS to build custom stylesheets. 
+
+[Rstudio](https://shiny.rstudio.com/articles/css.html) and [R-bloggers](https://www.r-bloggers.com/2019/08/how-to-use-css-to-style-your-r-shiny-projects/) have good articles on how to add custom CSS to your app. 
+
 ---
 class: inverse, center, middle
 
-# (gg)`plotly`
+# Example: 02-layouts
 
 ---
 class: inverse, center, middle
 
-# `leaflet`
+# Section 3: (gg)`plotly`
+
+---
+# What is `plotly`?
+
+Plotly for R allows you to to make interactive web-based graphs via the open source JavaScript graphing library `plotly.js`. 
+
+By default, Plotly's main plotting function `plot_ly()` behaves much like `base::plot()`.
+
+However, they've also created another function `ggplotly()` that integrates nicely with `ggplot2` to make your `ggplot()` figures interactive. 
+
+There is some reference material for using the `plotly` package in R [here](https://plotly.com/r/), *but* documentation for `ggplotly()` specifically is more limited. 
+---
+# A simple `ggplotly()` figure
+
+
+
+
+```r
+p &lt;- ggplot(data = dat, aes(x = State, y = Rate, fill = Crime))+
+  geom_bar(stat = "identity")+
+  theme_bw()+coord_flip()+theme(legend.position = "none")
+
+ggplotly(p)
+```
+
+<div id="htmlwidget-3cd0b6a71309e561eac9" style="width:100%;height:324px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-3cd0b6a71309e561eac9">{"x":{"data":[{"orientation":"h","width":[0.9,0.9,0.9,0.9,0.9,0.9,0.9,0.899999999999999,0.899999999999999,0.899999999999999],"base":[92.4,102.5,119.1,78.3,140.6,124.6,91.4,93.7,127.3,103.2],"x":[236,263,294,190,276,204,110,238,335,211],"y":[1,2,3,4,5,6,7,8,9,10],"text":["State: Alabama<br />Rate: 236.0<br />Crime: Assault","State: Alaska<br />Rate: 263.0<br />Crime: Assault","State: Arizona<br />Rate: 294.0<br />Crime: Assault","State: Arkansas<br />Rate: 190.0<br />Crime: Assault","State: California<br />Rate: 276.0<br />Crime: Assault","State: Colorado<br />Rate: 204.0<br />Crime: Assault","State: Connecticut<br />Rate: 110.0<br />Crime: Assault","State: Delaware<br />Rate: 238.0<br />Crime: Assault","State: Florida<br />Rate: 335.0<br />Crime: Assault","State: Georgia<br />Rate: 211.0<br />Crime: Assault"],"type":"bar","marker":{"autocolorscale":false,"color":"rgba(248,118,109,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"Assault","legendgroup":"Assault","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"h","width":[0.9,0.9,0.9,0.9,0.9,0.9,0.9,0.899999999999999,0.899999999999999,0.899999999999999],"base":[79.2,92.5,111,69.5,131.6,116.7,88.1,87.8,111.9,85.8],"x":[13.2,10,8.09999999999999,8.8,9,7.90000000000001,3.30000000000001,5.90000000000001,15.4,17.4],"y":[1,2,3,4,5,6,7,8,9,10],"text":["State: Alabama<br />Rate:  13.2<br />Crime: Murder","State: Alaska<br />Rate:  10.0<br />Crime: Murder","State: Arizona<br />Rate:   8.1<br />Crime: Murder","State: Arkansas<br />Rate:   8.8<br />Crime: Murder","State: California<br />Rate:   9.0<br />Crime: Murder","State: Colorado<br />Rate:   7.9<br />Crime: Murder","State: Connecticut<br />Rate:   3.3<br />Crime: Murder","State: Delaware<br />Rate:   5.9<br />Crime: Murder","State: Florida<br />Rate:  15.4<br />Crime: Murder","State: Georgia<br />Rate:  17.4<br />Crime: Murder"],"type":"bar","marker":{"autocolorscale":false,"color":"rgba(124,174,0,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"Murder","legendgroup":"Murder","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"h","width":[0.9,0.9,0.9,0.9,0.9,0.9,0.9,0.899999999999999,0.899999999999999,0.899999999999999],"base":[58,48,80,50,91,78,77,72,80,60],"x":[21.2,44.5,31,19.5,40.6,38.7,11.1,15.8,31.9,25.8],"y":[1,2,3,4,5,6,7,8,9,10],"text":["State: Alabama<br />Rate:  21.2<br />Crime: Rape","State: Alaska<br />Rate:  44.5<br />Crime: Rape","State: Arizona<br />Rate:  31.0<br />Crime: Rape","State: Arkansas<br />Rate:  19.5<br />Crime: Rape","State: California<br />Rate:  40.6<br />Crime: Rape","State: Colorado<br />Rate:  38.7<br />Crime: Rape","State: Connecticut<br />Rate:  11.1<br />Crime: Rape","State: Delaware<br />Rate:  15.8<br />Crime: Rape","State: Florida<br />Rate:  31.9<br />Crime: Rape","State: Georgia<br />Rate:  25.8<br />Crime: Rape"],"type":"bar","marker":{"autocolorscale":false,"color":"rgba(0,191,196,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"Rape","legendgroup":"Rape","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"h","width":[0.9,0.9,0.9,0.9,0.9,0.9,0.9,0.899999999999999,0.899999999999999,0.899999999999999],"base":[0,0,0,0,0,0,0,0,0,0],"x":[58,48,80,50,91,78,77,72,80,60],"y":[1,2,3,4,5,6,7,8,9,10],"text":["State: Alabama<br />Rate:  58.0<br />Crime: UrbanPop","State: Alaska<br />Rate:  48.0<br />Crime: UrbanPop","State: Arizona<br />Rate:  80.0<br />Crime: UrbanPop","State: Arkansas<br />Rate:  50.0<br />Crime: UrbanPop","State: California<br />Rate:  91.0<br />Crime: UrbanPop","State: Colorado<br />Rate:  78.0<br />Crime: UrbanPop","State: Connecticut<br />Rate:  77.0<br />Crime: UrbanPop","State: Delaware<br />Rate:  72.0<br />Crime: UrbanPop","State: Florida<br />Rate:  80.0<br />Crime: UrbanPop","State: Georgia<br />Rate:  60.0<br />Crime: UrbanPop"],"type":"bar","marker":{"autocolorscale":false,"color":"rgba(199,124,255,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"UrbanPop","legendgroup":"UrbanPop","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":27.3647894469812,"r":7.30593607305936,"b":41.3191273465246,"l":89.8630136986302},"plot_bgcolor":"rgba(255,255,255,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-23.115,485.415],"tickmode":"array","ticktext":["0","100","200","300","400"],"tickvals":[0,100,200,300,400],"categoryorder":"array","categoryarray":["0","100","200","300","400"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"y","title":{"text":"Rate","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[0.4,10.6],"tickmode":"array","ticktext":["Alabama","Alaska","Arizona","Arkansas","California","Colorado","Connecticut","Delaware","Florida","Georgia"],"tickvals":[1,2,3,4,5,6,7,8,9,10],"categoryorder":"array","categoryarray":["Alabama","Alaska","Arizona","Arkansas","California","Colorado","Connecticut","Delaware","Florida","Georgia"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"x","title":{"text":"State","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":"transparent","line":{"color":"rgba(51,51,51,1)","width":0.66417600664176,"linetype":"solid"},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.88976377952756,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","showSendToCloud":false},"source":"A","attrs":{"10921452a8851":{"x":{},"y":{},"fill":{},"type":"bar"}},"cur_data":"10921452a8851","visdat":{"10921452a8851":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+
+---
+class: inverse, center, middle
+
+# Example: 03-ggplotly
+
+---
+class: inverse, center, middle
+
+# Section 4: `leaflet`
 
 ---
 
@@ -354,425 +447,41 @@ Rstudio has created some great basic reference material for using the `leaflet` 
 
 ```r
 library(leaflet)
-leaflet() %&gt;% addTiles() %&gt;% setView(-93.65, 42.0285, zoom = 17)
+leaflet() %&gt;% 
+  addTiles() %&gt;% 
+  setView(-119.848965, 34.413489, zoom = 15) %&gt;%
+  addMarkers(-119.84230, 34.41251, popup = "Marine Science")
 ```
 
-<div id="htmlwidget-1855bc64cc3c99b78491" style="width:100%;height:288px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-1855bc64cc3c99b78491">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]}],"setView":[[42.0285,-93.65],17,[]]},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-51362cc6b05cf5b32403" style="width:100%;height:288px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-51362cc6b05cf5b32403">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addMarkers","args":[34.41251,-119.8423,null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},"Marine Science",null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"setView":[[34.413489,-119.848965],15,[]],"limits":{"lat":[34.41251,34.41251],"lng":[-119.8423,-119.8423]}},"evals":[],"jsHooks":[]}</script>
 
+---
+# Adding layers
 
-```r
-library(leaflet)
-leaflet() %&gt;% addTiles() %&gt;% setView(-93.65, 42.0285, zoom = 17)
-```
+[NEED]
+
+---
+class: inverse, center, middle
+
+# Example: 04-leaflet
 
 ---
 
+# Questions?
 
-```r
-DT::datatable(
-  head(iris, 10),
-  fillContainer = FALSE, options = list(pageLength = 8)
-)
-```
+### Contact
+email: [kmillage@ucsb.edu](mailto:kmillage@ucsb.edu)
 
-<div id="htmlwidget-60046b6bc722e1b24ce6" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-60046b6bc722e1b24ce6">{"x":{"filter":"none","fillContainer":false,"data":[["1","2","3","4","5","6","7","8","9","10"],[5.1,4.9,4.7,4.6,5,5.4,4.6,5,4.4,4.9],[3.5,3,3.2,3.1,3.6,3.9,3.4,3.4,2.9,3.1],[1.4,1.4,1.3,1.5,1.4,1.7,1.4,1.5,1.4,1.5],[0.2,0.2,0.2,0.2,0.2,0.4,0.3,0.2,0.2,0.1],["setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Sepal.Length<\/th>\n      <th>Sepal.Width<\/th>\n      <th>Petal.Length<\/th>\n      <th>Petal.Width<\/th>\n      <th>Species<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":8,"columnDefs":[{"className":"dt-right","targets":[1,2,3,4]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[8,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
+GitHub: [kmillage](https://github.com/kmillage)
 
----
+### Some of my Shiny apps!
 
-# Some Tips
+[SubsidyExplorer](http://www.subsidyexplorer.org/)
 
-- Do not forget to try the `yolo` option of `xaringan::moon_reader`.
+[Nutricast](https://emlab-ucsb.shinyapps.io/nutricast/)
 
-    ```yaml
-    output:
-      xaringan::moon_reader:
-        yolo: true
-    ```
-
----
-
-# Some Tips
-
-- Slides can be automatically played if you set the `autoplay` option under `nature`, e.g. go to the next slide every 30 seconds in a lightning talk:
-
-    ```yaml
-    output:
-      xaringan::moon_reader:
-        nature:
-          autoplay: 30000
-    ```
-
-- If you want to restart the play after it reaches the last slide, you may set the sub-option `loop` to TRUE, e.g.,
-
-    ```yaml
-    output:
-      xaringan::moon_reader:
-        nature:
-          autoplay:
-            interval: 30000
-            loop: true
-    ```
-
----
-
-# Some Tips
-
-- A countdown timer can be added to every page of the slides using the `countdown` option under `nature`, e.g. if you want to spend one minute on every page when you give the talk, you can set:
-
-    ```yaml
-    output:
-      xaringan::moon_reader:
-        nature:
-          countdown: 60000
-    ```
-
-    Then you will see a timer counting down from `01:00`, to `00:59`, `00:58`, ... When the time is out, the timer will continue but the time turns red.
-    
----
-
-# Some Tips
-
-- The title slide is created automatically by **xaringan**, but it is just another remark.js slide added before your other slides.
-
-    The title slide is set to `class: center, middle, inverse, title-slide` by default. You can change the classes applied to the title slide with the `titleSlideClass` option of `nature` (`title-slide` is always applied).
-
-    ```yaml
-    output:
-      xaringan::moon_reader:
-        nature:
-          titleSlideClass: [top, left, inverse]
-    ```
-    
---
-
-- If you'd like to create your own title slide, disable **xaringan**'s title slide with the `seal = FALSE` option of `moon_reader`.
-
-    ```yaml
-    output:
-      xaringan::moon_reader:
-        seal: false
-    ```
-
----
-
-# Some Tips
-
-- There are several ways to build incremental slides. See [this presentation](https://slides.yihui.org/xaringan/incremental.html) for examples.
-
-- The option `highlightLines: true` of `nature` will highlight code lines that start with `*`, or are wrapped in `{{ }}`, or have trailing comments `#&lt;&lt;`;
-
-    ```yaml
-    output:
-      xaringan::moon_reader:
-        nature:
-          highlightLines: true
-    ```
-
-    See examples on the next page.
-
----
-
-# Some Tips
-
-
-.pull-left[
-An example using a leading `*`:
-
-    ```r
-    if (TRUE) {
-    ** message("Very important!")
-    }
-    ```
-Output:
-```r
-if (TRUE) {
-* message("Very important!")
-}
-```
-
-This is invalid R code, so it is a plain fenced code block that is not executed.
-]
-
-.pull-right[
-An example using `{{}}`:
-
-````
-```{r tidy=FALSE}
-if (TRUE) {
-*{{ message("Very important!") }}
-}
-```
-````
-Output:
-
-```r
-if (TRUE) {
-* message("Very important!") 
-}
-```
-
-```
-## Very important!
-```
-
-It is valid R code so you can run it. Note that `{{}}` can wrap an R expression of multiple lines.
-]
-
----
-
-# Some Tips
-
-An example of using the trailing comment `#&lt;&lt;` to highlight lines:
-
-````markdown
-```{r tidy=FALSE}
-library(ggplot2)
-ggplot(mtcars) + 
-  aes(mpg, disp) + 
-  geom_point() +   #&lt;&lt;
-  geom_smooth()    #&lt;&lt;
-```
-````
-
-Output:
-
-
-```r
-library(ggplot2)
-ggplot(mtcars) + 
-  aes(mpg, disp) + 
-* geom_point() +
-* geom_smooth()
-```
-
----
-
-# Some Tips
-
-When you enable line-highlighting, you can also use the chunk option `highlight.output` to highlight specific lines of the text output from a code chunk. For example, `highlight.output = TRUE` means highlighting all lines, and `highlight.output = c(1, 3)` means highlighting the first and third line.
-
-````md
-```{r, highlight.output=c(1, 3)}
-head(iris)
-```
-````
-
-
-```
-*##   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
-## 1          5.1         3.5          1.4         0.2  setosa
-*## 2          4.9         3.0          1.4         0.2  setosa
-## 3          4.7         3.2          1.3         0.2  setosa
-## 4          4.6         3.1          1.5         0.2  setosa
-## 5          5.0         3.6          1.4         0.2  setosa
-## 6          5.4         3.9          1.7         0.4  setosa
-```
-
-Question: what does `highlight.output = c(TRUE, FALSE)` mean? (Hint: think about R's recycling of vectors)
-
----
-
-# Some Tips
-
-- To make slides work offline, you need to download a copy of remark.js in advance, because **xaringan** uses the online version by default (see the help page `?xaringan::moon_reader`).
-
-- You can use `xaringan::summon_remark()` to download the latest or a specified version of remark.js. By default, it is downloaded to `libs/remark-latest.min.js`.
-
-- Then change the `chakra` option in YAML to point to this file, e.g.
-
-    ```yaml
-    output:
-      xaringan::moon_reader:
-        chakra: libs/remark-latest.min.js
-    ```
-
-- If you used Google fonts in slides (the default theme uses _Yanone Kaffeesatz_, _Droid Serif_, and _Source Code Pro_), they won't work offline unless you download or install them locally. The Heroku app [google-webfonts-helper](https://google-webfonts-helper.herokuapp.com/fonts) can help you download fonts and generate the necessary CSS.
-
----
-
-# Macros
-
-- remark.js [allows users to define custom macros](https://github.com/yihui/xaringan/issues/80) (JS functions) that can be applied to Markdown text using the syntax `![:macroName arg1, arg2, ...]` or `![:macroName arg1, arg2, ...](this)`. For example, before remark.js initializes the slides, you can define a macro named `scale`:
-
-    ```js
-    remark.macros.scale = function (percentage) {
-      var url = this;
-      return '&lt;img src="' + url + '" style="width: ' + percentage + '" /&gt;';
-    };
-    ```
-
-    Then the Markdown text
-
-    ```markdown
-    ![:scale 50%](image.jpg)
-    ```
-
-    will be translated to
-    
-    ```html
-    &lt;img src="image.jpg" style="width: 50%" /&gt;
-    ```
-
----
-
-# Macros (continued)
-
-- To insert macros in **xaringan** slides, you can use the option `beforeInit` under the option `nature`, e.g.,
-
-    ```yaml
-    output:
-      xaringan::moon_reader:
-        nature:
-          beforeInit: "macros.js"
-    ```
-
-    You save your remark.js macros in the file `macros.js`.
-
-- The `beforeInit` option can be used to insert arbitrary JS code before `remark.create()`. Inserting macros is just one of its possible applications.
-
----
-
-# CSS
-
-Among all options in `xaringan::moon_reader`, the most challenging but perhaps also the most rewarding one is `css`, because it allows you to customize the appearance of your slides using any CSS rules or hacks you know.
-
-You can see the default CSS file [here](https://github.com/yihui/xaringan/blob/master/inst/rmarkdown/templates/xaringan/resources/default.css). You can completely replace it with your own CSS files, or define new rules to override the default. See the help page `?xaringan::moon_reader` for more information.
-
----
-
-# CSS
-
-For example, suppose you want to change the font for code from the default "Source Code Pro" to "Ubuntu Mono". You can create a CSS file named, say, `ubuntu-mono.css`:
-
-```css
-@import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
-
-.remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
-```
-
-Then set the `css` option in the YAML metadata:
-
-```yaml
-output:
-  xaringan::moon_reader:
-    css: ["default", "ubuntu-mono.css"]
-```
-
-Here I assume `ubuntu-mono.css` is under the same directory as your Rmd.
-
-See [yihui/xaringan#83](https://github.com/yihui/xaringan/issues/83) for an example of using the [Fira Code](https://github.com/tonsky/FiraCode) font, which supports ligatures in program code.
-
----
-
-# Themes
-
-Don't want to learn CSS? Okay, you can use some user-contributed themes. A theme typically consists of two CSS files `foo.css` and `foo-fonts.css`, where `foo` is the theme name. Below are some existing themes:
-
-
-```r
-names(xaringan:::list_css())
-```
-
-```
-##  [1] "chocolate-fonts"  "chocolate"        "default-fonts"   
-##  [4] "default"          "duke-blue"        "fc-fonts"        
-##  [7] "fc"               "hygge-duke"       "hygge"           
-## [10] "ki-fonts"         "ki"               "kunoichi"        
-## [13] "lucy-fonts"       "lucy"             "metropolis-fonts"
-## [16] "metropolis"       "middlebury-fonts" "middlebury"      
-## [19] "ninjutsu"         "rladies-fonts"    "rladies"         
-## [22] "robot-fonts"      "robot"            "rutgers-fonts"   
-## [25] "rutgers"          "shinobi"          "tamu-fonts"      
-## [28] "tamu"             "uio-fonts"        "uio"             
-## [31] "uo-fonts"         "uo"               "uol-fonts"       
-## [34] "uol"              "useR-fonts"       "useR"
-```
-
----
-
-# Themes
-
-To use a theme, you can specify the `css` option as an array of CSS filenames (without the `.css` extensions), e.g.,
-
-```yaml
-output:
-  xaringan::moon_reader:
-    css: [default, metropolis, metropolis-fonts]
-```
-
-If you want to contribute a theme to **xaringan**, please read [this blog post](https://yihui.org/en/2017/10/xaringan-themes).
-
----
-class: inverse, middle, center
-background-image: url(https://upload.wikimedia.org/wikipedia/commons/3/39/Naruto_Shiki_Fujin.svg)
-background-size: contain
-
-# Naruto
-
----
-background-image: url(https://upload.wikimedia.org/wikipedia/commons/b/be/Sharingan_triple.svg)
-background-size: 100px
-background-position: 90% 8%
-
-# Sharingan
-
-The R package name **xaringan** was derived&lt;sup&gt;1&lt;/sup&gt; from **Sharingan**, a dōjutsu in the Japanese anime _Naruto_ with two abilities:
-
-- the "Eye of Insight"
-
-- the "Eye of Hypnotism"
-
-I think a presentation is basically a way to communicate insights to the audience, and a great presentation may even "hypnotize" the audience.&lt;sup&gt;2,3&lt;/sup&gt;
-
-.footnote[
-[1] In Chinese, the pronounciation of _X_ is _Sh_ /ʃ/ (as in _shrimp_). Now you should have a better idea of how to pronounce my last name _Xie_.
-
-[2] By comparison, bad presentations only put the audience to sleep.
-
-[3] Personally I find that setting background images for slides is a killer feature of remark.js. It is an effective way to bring visual impact into your presentations.
-]
-
----
-
-# Naruto terminology
-
-The **xaringan** package borrowed a few terms from Naruto, such as
-
-- [Sharingan](https://naruto.fandom.com/wiki/Sharingan) (写輪眼; the package name)
-
-- The [moon reader](https://naruto.fandom.com/wiki/Moon_Reader) (月読; an attractive R Markdown output format)
-
-- [Chakra](https://naruto.fandom.com/wiki/Chakra) (查克拉; the path to the remark.js library, which is the power to drive the presentation)
-
-- [Nature transformation](https://naruto.fandom.com/wiki/Nature_Transformation) (性質変化; transform the chakra by setting different options)
-
-- The [infinite moon reader](https://naruto.fandom.com/wiki/Infinite_Tsukuyomi) (無限月読; start a local web server to continuously serve your slides)
-
-- The [summoning technique](https://naruto.fandom.com/wiki/Summoning_Technique) (download remark.js from the web)
-
-You can click the links to know more about them if you want. The jutsu "Moon Reader" may seem a little evil, but that does not mean your slides are evil.
-
----
-
-class: center
-
-# Hand seals (印)
-
-Press `h` or `?` to see the possible ninjutsu you can use in remark.js.
-
-![](https://upload.wikimedia.org/wikipedia/commons/7/7e/Mudra-Naruto-KageBunshin.svg)
-
----
-
-class: center, middle
-
-# Thanks!
-
-Slides created via the R package [**xaringan**](https://github.com/yihui/xaringan).
-
-The chakra comes from [remark.js](https://remarkjs.com), [**knitr**](https://yihui.org/knitr), and [R Markdown](https://rmarkdown.rstudio.com).
+[ACP Atlas of Distant Water Fishing](https://emlab-ucsb.shinyapps.io/SubsidyAtlasACP/)
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
