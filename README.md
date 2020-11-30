@@ -22,20 +22,19 @@ library(rnaturalearth) # maps
 library(rnaturalearthdata) # map data
 ```
 
-
 This goal of this talk is to provide a *short* introduction to Shiny for R, and then to highlight some of its capabilities that I have found to be most effective for building interactive web applications. 
 
-**The first portion of the talk will provide a short intro on the basics of Shiny, but I'm going to assume that participants have some knowlege of what Shiny does and why you would want to use it.**
+**The first portion of the talk will provide a short intro on the basics of Shiny, but later sections will assume that you're already somewhat comfortable with Shiny.**
 
 This presentation will be roughtly divided into four parts: 
 
-1. The basics: How to make your reactive programming more efficient
+1. The Basics: Brief review of essential Shiny functions and some tips to make your reactive programming more efficient;
 
-2. Shiny app layouts: Special containers and pretty widgets
+2. `shinydashboard`: Keeping things organized;
 
-3. (gg)plotly: Making your plots interactive
+3. (gg)`plotly`: Making your (already awesome) `ggplot` figures more awesome;
 
-4. Leaflet: Interactive maps! 
+4. `leaflet`: Interactive maps! 
 
 
 Within each section, I'll start with a few slides of explaination, and then turn to a small Shiny app to demonstrate. 

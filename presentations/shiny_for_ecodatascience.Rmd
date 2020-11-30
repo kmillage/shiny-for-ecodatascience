@@ -33,7 +33,7 @@ class: center, middle
 
 --
 
-- `shinydashboard`: A really useful useful package for keeping things organized;
+- `shinydashboard`: Keeping things organized;
 
 --
 
@@ -110,15 +110,57 @@ The `server.R` file defines the server logic for your app. This is the place for
 
 You'll predominately use three types of functions to define your user-interface: 
 
-- Structural functions (layout & containers);
+- Structural UI functions (layout & containers);
 
 --
 
-- Widgets;
+- Widgets (input functions);
 
 --
 
-- Reactive object functions.
+- Output functions.
+
+---
+# **`ui.R`** / `server.R`
+## Structural UI Functions
+
+The highest layer of UI construction is dictated by the behavior of the page. The basic `shiny` package includes three main page functions: `basicPage()`, `fixedPage()`, **`fluidPage()`**
+
+--
+
+The second highest level of UI construction defines the layout of objects on the page. There are four layout functions in the basic `shiny` package: `verticalLayout()`, `flowLayout()`, `splitLayout()`, **`sidebarLayout()`**
+
+--
+
+There are also a number of lower level UI construction functions. These create panels, rows, and columns within your specified layout. Some of these can be used within any layout function (e.g., `tabsetPanel()`, `wellPanel()`, `titlePanel()`, `conditionalPanel()`, `aboslutePanel()`, `column()`), while others are specific to a particular layout function (e.g., `sidebarPanel()`, `mainPanel()`, `inputPanel()`, `fluidRow()`). 
+
+More info on the basic Shiny layouts can be found [here](https://shiny.rstudio.com/articles/layout-guide.html). 
+
+---
+# **`ui.R`** / `server.R`
+## Widgets
+
+These are the functions that create the fun little buttons and sliders that your user gets to click on and drag. The values returned by these functions make up the `input` object that is passed to your `server.R` file.  
+
+There are a lot of them. They are all defined as `[xxx]Input()`. The [Shiny Widget Gallery](https://shiny.rstudio.com/gallery/widget-gallery.html) does a nice job of displaying all of the basic widgets and the values they return.
+
+Each widget is assigned an `inputId` - this is how your widgets will be identified in the server logic. *Knowing the format of the value returned by your widgets is important!*
+
+---
+# **`ui.R`** / `server.R`
+## Output Functions
+
+These are the functions that define the outputs that should be visible in your app. Think of these as placeholders for the things you want to display. These can be plots, value, text, images, tables, or really anything you can define with HTML. The basic output functions are as follows: 
+
+- `plotOutput()`
+- `textOutput()`
+- `uiOutput()`
+- `htmlOutput()`
+- `imageOutput()`
+- `tableOutput()`
+- `dataTableOutput()`
+
+Each output function is assigned an `outputId` - this is how your function knows which variable from the `output` object to include here. 
 
 ---
 
@@ -148,50 +190,113 @@ shinyUI(fluidPage(
 
 ---
 
-# Structural UI functions
+# `ui.R` / **`server.R`**
 
-The first layer of UI construction is dictated by the behavior of the page. The basic `shiny` package includes three main page functions: 
-- `basicPage()`
-- `fixedPage()`
-- **`fluidPage()`**
+You'll predominately use four types of functions to define your server logic: 
 
---
-
-The second level of UI construction defines the layout of objects on the page. There are four layout functions in the basic `shiny` package: 
-- `verticalLayout()`
-- `flowLayout()`
-- `splitLayout()`
-- **`sidebarLayout()`**
+- Reactive values;
 
 --
 
-The third layer of UI construction creates panels within your specified layout. Some of these can be used within any layout function (e.g., `tabsetPanel()`, `wellPanel()`, `titlePanel()`, `conditionalPanel()`, `aboslutePanel()`), while others are specific to a particular layout function (e.g., `sidebarPanel()`, `mainPanel()`, `inputPanel()`). 
+- Reactive expressions;
+
+--
+
+- Observers;
+
+--
+
+- Rendering functions.
+
+--
+
+** The key differences between these functions are their execution strategies (eager or lazy) and whether they yield a result or have a value **
+
+---
+# `ui.R` / **`server.R`**
+## Reactive Values
+
+`reactiveValues()`
+
+This function returns an object for storing reactive values - think of this as a fancy `list()`. The "reactive" piece is that whenever a reactive value changes, any reactive expressions that depend on it are marked as "invalidated" and will automatically re-execute.  
+
+---
+# `ui.R` / **`server.R`**
+## Reactive Expressions
+
+`reactive()` and `eventReactive()`
+
+These two functions create expressions whose results will change over time. Similar to the previous class, whenever the result of a reactive expression changes, any other reactive expressions that recently called it are marked as "invalidated". 
+
+---
+# `ui.R` / **`server.R`**
+## Observers
+
+`observe()` and `observeEvent()`
+
+These two functions can read reactive values and call reactive expressions, and will automatically re-execute when their dependencies change. However, they do not yield a result, and therefore only useful for their side effects.    
+
+---
+# `ui.R` / **`server.R`**
+## Rendering Functions
+
+`renderPlot()`, `renderText()`, `renderUI()`, `renderPrint()`, `renderImage()`, `renderTable()`, `renderDataTable()`
+
+These functions create reactive versions of their namesakes that are suitable for assigning to an `output` slot. They have cooresponding output functions in the UI that are used to display those items.  
 
 ---
 
-# Widgets
+# `ui.R` / **`server.R`**
 
-These are the functions that create the fun little buttons and sliders that your user gets to click on and drag. The values returned by these functions make up the `input` object that is passed to your `server.R` file.  
+.pull-left[
+**Reactive Values**
+- Neither eager or lazy
+- Returns a value
 
-There are a lot of them. They are all defined as [something]Input(). All of the basic widgets are displayed  
+**Reactive Expressions**
+- Lazy
+- Returns a value
+]
+
+.pull-right[
+**Observers**
+- Eager
+- No value
+
+**Rendering Functions**
+- Lazy
+- Can be assigned to an `output` value
+]
 
 ---
 
-# Reactive object UI functions
+# `ui.R` / **`server.R`**
 
-NEED
+```{r comment='#',eval=F}
+# server.R
+shinyServer(function(input, output) {
 
----
+    output$distPlot <- renderPlot({
 
-```{r comment='#'}
-# a boring regression
-fit = lm(dist ~ 1 + speed, data = cars)
-coef(summary(fit))
-dojutsu = c('地爆天星', '天照', '加具土命', '神威', '須佐能乎', '無限月読')
-grep('天', dojutsu, value = TRUE)
+        x    <- faithful[, 2]
+        bins <- seq(min(x), max(x), length.out = input$bins + 1)
+
+        hist(x, breaks = bins, col = 'darkgray', border = 'white')
+
+    })
+
+})
 ```
 
 ---
+# `ui.R` / `server.R`
+
+Great resources on the Shiny basics: 
+- [Reactivity, Pt. 1](https://rstudio.com/resources/shiny-dev-con/reactivity-pt-1-joe-cheng/): Joe Cheng, Shiny Dev Con 2016
+- [Reactivity, Pt. 2](https://rstudio.com/resources/shiny-dev-con/reactivity-pt-2/): Joe Cheng, Shiny Dev Con 2016
+
+---
+
 class: inverse, center, middle
 
 # The Basics
@@ -199,84 +304,39 @@ class: inverse, center, middle
 ## 01-basics
 
 ---
+class: inverse, center, middle
 
-# Two column layout
+# `shinydashboard`
 
-Some differences between using remark.js (left) and using **xaringan** (right):
+---
+class: inverse, center, middle
 
-.pull-left[
-1. Start with a boilerplate HTML file;
+# (gg)`plotly`
 
-1. Plain Markdown;
+---
+class: inverse, center, middle
 
-1. Write JavaScript to autoplay slides;
-
-1. Manually configure MathJax;
-
-1. Highlight code with `*`;
-
-1. Edit Markdown source and refresh browser to see updated slides;
-]
-
-.pull-right[
-1. Start with an R Markdown document;
-
-1. R Markdown (can embed R/other code chunks);
-
-1. Provide an option `autoplay`;
-
-1. MathJax just works;<sup>*</sup>
-
-1. Highlight code with `{{}}`;
-
-1. The RStudio addin "Infinite Moon Reader" automatically refreshes slides on changes;
-]
+# `leaflet`
 
 ---
 
-# R Code
+# What is `leaflet`?
 
-```{r comment='#'}
-# a boring regression
-fit = lm(dist ~ 1 + speed, data = cars)
-coef(summary(fit))
-dojutsu = c('地爆天星', '天照', '加具土命', '神威', '須佐能乎', '無限月読')
-grep('天', dojutsu, value = TRUE)
+Leaflet is an open-source JavaScript library that makes mobile-friendly interactive maps. 
+
+The R package makes it easy to integrate these maps in R, and they work particularly well embedded in R Markdown documents or in Shiny apps. 
+
+Rstudio has created some great basic reference material for using the `leaflet` package in R -  [Leaflet for R](https://rstudio.github.io/leaflet/)
+
+---
+# A simple `leaflet` map
+
+```{r out.width='100%', fig.height=4, eval=require('leaflet')}
+library(leaflet)
+leaflet() %>% addTiles() %>% setView(-93.65, 42.0285, zoom = 17)
 ```
 
----
-
-# R Plots
-
-```{r cars, fig.height=4, dev='svg'}
-# par(mar = c(4, 4, 1, .1))
-# plot(cars, pch = 19, col = 'darkgray', las = 1)
-# abline(fit, lwd = 2)
-```
-
----
-
-# Tables
-
-If you want to generate a table, make sure it is in the HTML format (instead of Markdown or other formats), e.g.,
-
-```{r}
-knitr::kable(head(iris), format = 'html')
-```
-
----
-
-# HTML Widgets
-
-I have not thoroughly tested HTML widgets against **xaringan**. Some may work well, and some may not. It is a little tricky.
-
-Similarly, the Shiny mode (`runtime: shiny`) does not work. I might get these issues fixed in the future, but these are not of high priority to me. I never turn my presentation into a Shiny app. When I need to demonstrate more complicated examples, I just launch them separately. It is convenient to share slides with other people when they are plain HTML/JS applications.
-
-See the next page for two HTML widgets.
-
----
-
-```{r out.width='100%', fig.height=6, eval=require('leaflet')}
+```{r eval=F}
 library(leaflet)
 leaflet() %>% addTiles() %>% setView(-93.65, 42.0285, zoom = 17)
 ```

@@ -53,7 +53,7 @@ class: center, middle
 
 --
 
-- `shinydashboard`: A really useful useful package for keeping things organized;
+- `shinydashboard`: Keeping things organized;
 
 --
 
@@ -130,15 +130,55 @@ The `server.R` file defines the server logic for your app. This is the place for
 
 You'll predominately use three types of functions to define your user-interface: 
 
-- Structural functions (layout &amp; containers);
+- Structural UI functions (layout &amp; containers);
 
 --
 
-- Widgets;
+- Widgets (input functions);
 
 --
 
-- Reactive object functions.
+- Output functions.
+
+---
+# **`ui.R`** / `server.R`
+## Structural UI Functions
+
+The highest layer of UI construction is dictated by the behavior of the page. The basic `shiny` package includes three main page functions: `basicPage()`, `fixedPage()`, **`fluidPage()`**
+
+--
+
+The second highest level of UI construction defines the layout of objects on the page. There are four layout functions in the basic `shiny` package: `verticalLayout()`, `flowLayout()`, `splitLayout()`, **`sidebarLayout()`**
+
+--
+
+There are also a number of lower level UI construction functions. These create panels, rows, and columns within your specified layout. Some of these can be used within any layout function (e.g., `tabsetPanel()`, `wellPanel()`, `titlePanel()`, `conditionalPanel()`, `aboslutePanel()`, `column()`), while others are specific to a particular layout function (e.g., `sidebarPanel()`, `mainPanel()`, `inputPanel()`, `fluidRow()`). 
+
+---
+# **`ui.R`** / `server.R`
+## Widgets
+
+These are the functions that create the fun little buttons and sliders that your user gets to click on and drag. The values returned by these functions make up the `input` object that is passed to your `server.R` file.  
+
+There are a lot of them. They are all defined as `[xxx]Input()`. The [Shiny Widget Gallery](https://shiny.rstudio.com/gallery/widget-gallery.html) does a nice job of displaying all of the basic widgets and the values they return.
+
+Each widget is assigned an `inputId` - this is how your widgets will be identified in the server logic. *Knowing the format of the value returned by your widgets is important!*
+
+---
+# **`ui.R`** / `server.R`
+## Output Functions
+
+These are the functions that define the outputs that should be visible in your app. Think of these as placeholders for the things you want to display. These can be plots, value, text, images, tables, or really anything you can define with HTML. The basic output functions are as follows: 
+
+- `plotOutput()`
+- `textOutput()`
+- `uiOutput()`
+- `htmlOutput()`
+- `imageOutput()`
+- `tableOutput()`
+- `dataTableOutput()`
+
+Each output function is assigned an `outputId` - this is how your function knows which variable from the `output` object to include here. 
 
 ---
 
@@ -169,97 +209,114 @@ shinyUI(fluidPage(
 
 ---
 
-# Structural UI functions
+# `ui.R` / **`server.R`**
 
-The first layer of UI construction is dictated by a page layout()
+You'll predominately use four types of functions to define your server logic: 
 
-The basic `shiny` package includes three main layouts: 
-- Basic (`basicPage()`)
-- Fixed (`fixedPage()`)
-- **Fluid (`fluidPage()`)**
+- Reactive values;
 
 --
 
-There are then four main sublayouts: 
-- `verticalLayout()`
-- `flowLayout()`
-- `splitLayout()`
-- **`sidebarLayout()`**
+- Reactive expressions;
 
 --
+
+- Observers;
+
+--
+
+- Rendering functions.
+
+--
+
+** The key differences between these functions are their execution strategies (eager or lazy) and whether they yield a result or have a value **
+
+---
+# `ui.R` / **`server.R`**
+## Reactive Values
+
+`reactiveValues()`
+
+This function returns an object for storing reactive values - think of this as a fancy `list()`. The "reactive" piece is that whenever a reactive value changes, any reactive expressions that depend on it are marked as "invalidated" and will automatically re-execute.  
+
+---
+# `ui.R` / **`server.R`**
+## Reactive Expressions
+
+`reactive()` and `eventReactive()`
+
+These two functions create expressions whose results will change over time. Similar to the previous class, whenever the result of a reactive expression changes, any other reactive expressions that recently called it are marked as "invalidated". 
+
+---
+# `ui.R` / **`server.R`**
+## Observers
+
+`observe()` and `observeEvent()`
+
+These two functions can read reactive values and call reactive expressions, and will automatically re-execute when their dependencies change. However, they do not yield a result, and therefore only useful for their side effects.    
+
+---
+# `ui.R` / **`server.R`**
+## Rendering Functions
+
+`renderPlot()`, `renderText()`, `renderUI()`, `renderPrint()`, `renderImage()`, `renderTable()`, `renderDataTable()`
+
+These functions create reactive versions of their namesakes that are suitable for assigning to an `output` slot. They have cooresponding output functions in the UI that are used to display those items.  
+
+---
+
+# `ui.R` / **`server.R`**
 
 .pull-left[
-For a fluid app: 
+**Reactive Values**
+- Neither eager or lazy
+- Returns a value
 
-- `fluid
-
-1. Start with a boilerplate HTML file;
-
-1. Plain Markdown;
-
-1. Write JavaScript to autoplay slides;
-
-1. Manually configure MathJax;
-
-1. Highlight code with `*`;
-
-1. Edit Markdown source and refresh browser to see updated slides;
+**Reactive Expressions**
+- Lazy
+- Returns a value
 ]
 
 .pull-right[
-1. Start with an R Markdown document;
+**Observers**
+- Eager
+- No value
 
-1. R Markdown (can embed R/other code chunks);
-
-1. Provide an option `autoplay`;
-
-1. MathJax just works;&lt;sup&gt;*&lt;/sup&gt;
-
-1. Highlight code with `{{}}`;
-
-1. The RStudio addin "Infinite Moon Reader" automatically refreshes slides on changes;
+**Rendering Functions**
+- Lazy
+- Can be assigned to an `output` value
 ]
 
-
-
 ---
 
-# Widgets
-
-The basic 
-NEED
-
----
-
-# Reactive object UI functions
-
-NEED
-
----
+# `ui.R` / **`server.R`**
 
 
 ```r
-# a boring regression
-fit = lm(dist ~ 1 + speed, data = cars)
-coef(summary(fit))
-```
+# server.R
+shinyServer(function(input, output) {
 
-```
-#               Estimate Std. Error   t value     Pr(&gt;|t|)
-# (Intercept) -17.579095  6.7584402 -2.601058 1.231882e-02
-# speed         3.932409  0.4155128  9.463990 1.489836e-12
-```
+    output$distPlot &lt;- renderPlot({
 
-```r
-dojutsu = c('地爆天星', '天照', '加具土命', '神威', '須佐能乎', '無限月読')
-grep('天', dojutsu, value = TRUE)
-```
+        x    &lt;- faithful[, 2]
+        bins &lt;- seq(min(x), max(x), length.out = input$bins + 1)
 
-```
-# [1] "地爆天星" "天照"
+        hist(x, breaks = bins, col = 'darkgray', border = 'white')
+
+    })
+
+})
 ```
 
 ---
+# `ui.R` / `server.R`
+
+Great resources on the Shiny basics: 
+- [Reactivity, Pt. 1](https://rstudio.com/resources/shiny-dev-con/reactivity-pt-1-joe-cheng/): Joe Cheng, Shiny Dev Con 2016
+- [Reactivity, Pt. 2](https://rstudio.com/resources/shiny-dev-con/reactivity-pt-2/): Joe Cheng, Shiny Dev Con 2016
+
+---
+
 class: inverse, center, middle
 
 # The Basics
@@ -267,154 +324,32 @@ class: inverse, center, middle
 ## 01-basics
 
 ---
+class: inverse, center, middle
 
-# Two column layout
+# `shinydashboard`
 
-Some differences between using remark.js (left) and using **xaringan** (right):
+---
+class: inverse, center, middle
 
-.pull-left[
-1. Start with a boilerplate HTML file;
+# (gg)`plotly`
 
-1. Plain Markdown;
+---
+class: inverse, center, middle
 
-1. Write JavaScript to autoplay slides;
-
-1. Manually configure MathJax;
-
-1. Highlight code with `*`;
-
-1. Edit Markdown source and refresh browser to see updated slides;
-]
-
-.pull-right[
-1. Start with an R Markdown document;
-
-1. R Markdown (can embed R/other code chunks);
-
-1. Provide an option `autoplay`;
-
-1. MathJax just works;&lt;sup&gt;*&lt;/sup&gt;
-
-1. Highlight code with `{{}}`;
-
-1. The RStudio addin "Infinite Moon Reader" automatically refreshes slides on changes;
-]
+# `leaflet`
 
 ---
 
-# R Code
+# What is `leaflet`?
 
+Leaflet is an open-source JavaScript library that makes mobile-friendly interactive maps. 
 
-```r
-# a boring regression
-fit = lm(dist ~ 1 + speed, data = cars)
-coef(summary(fit))
-```
+The R package makes it easy to integrate these maps in R, and they work particularly well embedded in R Markdown documents or in Shiny apps. 
 
-```
-#               Estimate Std. Error   t value     Pr(&gt;|t|)
-# (Intercept) -17.579095  6.7584402 -2.601058 1.231882e-02
-# speed         3.932409  0.4155128  9.463990 1.489836e-12
-```
-
-```r
-dojutsu = c('地爆天星', '天照', '加具土命', '神威', '須佐能乎', '無限月読')
-grep('天', dojutsu, value = TRUE)
-```
-
-```
-# [1] "地爆天星" "天照"
-```
+Rstudio has created some great basic reference material for using the `leaflet` package in R -  [Leaflet for R](https://rstudio.github.io/leaflet/)
 
 ---
-
-# R Plots
-
-
-```r
-# par(mar = c(4, 4, 1, .1))
-# plot(cars, pch = 19, col = 'darkgray', las = 1)
-# abline(fit, lwd = 2)
-```
-
----
-
-# Tables
-
-If you want to generate a table, make sure it is in the HTML format (instead of Markdown or other formats), e.g.,
-
-
-```r
-knitr::kable(head(iris), format = 'html')
-```
-
-&lt;table&gt;
- &lt;thead&gt;
-  &lt;tr&gt;
-   &lt;th style="text-align:right;"&gt; Sepal.Length &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; Sepal.Width &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; Petal.Length &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; Petal.Width &lt;/th&gt;
-   &lt;th style="text-align:left;"&gt; Species &lt;/th&gt;
-  &lt;/tr&gt;
- &lt;/thead&gt;
-&lt;tbody&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 5.1 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 3.5 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1.4 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.2 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 4.9 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 3.0 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1.4 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.2 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 4.7 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 3.2 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1.3 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.2 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 4.6 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 3.1 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1.5 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.2 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 5.0 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 3.6 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1.4 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.2 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 5.4 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 3.9 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1.7 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.4 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
-  &lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
----
-
-# HTML Widgets
-
-I have not thoroughly tested HTML widgets against **xaringan**. Some may work well, and some may not. It is a little tricky.
-
-Similarly, the Shiny mode (`runtime: shiny`) does not work. I might get these issues fixed in the future, but these are not of high priority to me. I never turn my presentation into a Shiny app. When I need to demonstrate more complicated examples, I just launch them separately. It is convenient to share slides with other people when they are plain HTML/JS applications.
-
-See the next page for two HTML widgets.
-
----
+# A simple `leaflet` map
 
 
 ```r
@@ -422,8 +357,14 @@ library(leaflet)
 leaflet() %&gt;% addTiles() %&gt;% setView(-93.65, 42.0285, zoom = 17)
 ```
 
-<div id="htmlwidget-d346d073c0a16c721f3d" style="width:100%;height:432px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-d346d073c0a16c721f3d">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]}],"setView":[[42.0285,-93.65],17,[]]},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-1855bc64cc3c99b78491" style="width:100%;height:288px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1855bc64cc3c99b78491">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]}],"setView":[[42.0285,-93.65],17,[]]},"evals":[],"jsHooks":[]}</script>
+
+
+```r
+library(leaflet)
+leaflet() %&gt;% addTiles() %&gt;% setView(-93.65, 42.0285, zoom = 17)
+```
 
 ---
 
@@ -435,8 +376,8 @@ DT::datatable(
 )
 ```
 
-<div id="htmlwidget-f2665b2a119bdfc1811b" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-f2665b2a119bdfc1811b">{"x":{"filter":"none","fillContainer":false,"data":[["1","2","3","4","5","6","7","8","9","10"],[5.1,4.9,4.7,4.6,5,5.4,4.6,5,4.4,4.9],[3.5,3,3.2,3.1,3.6,3.9,3.4,3.4,2.9,3.1],[1.4,1.4,1.3,1.5,1.4,1.7,1.4,1.5,1.4,1.5],[0.2,0.2,0.2,0.2,0.2,0.4,0.3,0.2,0.2,0.1],["setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Sepal.Length<\/th>\n      <th>Sepal.Width<\/th>\n      <th>Petal.Length<\/th>\n      <th>Petal.Width<\/th>\n      <th>Species<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":8,"columnDefs":[{"className":"dt-right","targets":[1,2,3,4]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[8,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-60046b6bc722e1b24ce6" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-60046b6bc722e1b24ce6">{"x":{"filter":"none","fillContainer":false,"data":[["1","2","3","4","5","6","7","8","9","10"],[5.1,4.9,4.7,4.6,5,5.4,4.6,5,4.4,4.9],[3.5,3,3.2,3.1,3.6,3.9,3.4,3.4,2.9,3.1],[1.4,1.4,1.3,1.5,1.4,1.7,1.4,1.5,1.4,1.5],[0.2,0.2,0.2,0.2,0.2,0.4,0.3,0.2,0.2,0.1],["setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Sepal.Length<\/th>\n      <th>Sepal.Width<\/th>\n      <th>Petal.Length<\/th>\n      <th>Petal.Width<\/th>\n      <th>Species<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":8,"columnDefs":[{"className":"dt-right","targets":[1,2,3,4]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[8,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
 
 ---
 
