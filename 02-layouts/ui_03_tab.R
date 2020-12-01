@@ -43,39 +43,39 @@ Tab3 <- function(){
       
     ),
     
-    # Row of materialSwitches()
-    fluidRow(
-      
-      h3("materialSwitch()"),
-      
-      column(4, align = "center",
-             
-             materialSwitch(inputId = "widget_4",
-                            label = "Update value",
-                            value = FALSE,
-                            status = "info")
-             
-      ),
-      
-      column(4, align = "center",
-             
-             materialSwitch(inputId = "widget_5",
-                            label = "Start Something",
-                            value = FALSE,
-                            status = "success")
-             
-      ),
-      
-      column(4, align = "center",
-             
-             materialSwitch(inputId = "widget_6",
-                            label = "Stop Something",
-                            value = TRUE,
-                            status = "danger")
-             
-      )
-      
-    ),
+    # # Row of materialSwitches()
+    # fluidRow(
+    #   
+    #   h3("materialSwitch()"),
+    #   
+    #   column(4, align = "center",
+    #          
+    #          materialSwitch(inputId = "widget_4",
+    #                         label = "Update value",
+    #                         value = FALSE,
+    #                         status = "info")
+    #          
+    #   ),
+    #   
+    #   column(4, align = "center",
+    #          
+    #          materialSwitch(inputId = "widget_5",
+    #                         label = "Start Something",
+    #                         value = FALSE,
+    #                         status = "success")
+    #          
+    #   ),
+    #   
+    #   column(4, align = "center",
+    #          
+    #          materialSwitch(inputId = "widget_6",
+    #                         label = "Stop Something",
+    #                         value = TRUE,
+    #                         status = "danger")
+    #          
+    #   )
+    #   
+    # ),
     
     # Row of materialSwitches()
     fluidRow(

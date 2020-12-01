@@ -13,6 +13,8 @@ library(tidyverse)
 library(shiny)
 library(shinydashboard)
 library(plotly)
+library(scales)
+library(countrycode)
 
 # Source file that loads/wrangles data and text
 source("00_initialize_app.R")
@@ -38,7 +40,7 @@ shinyUI(
                   dashboardHeader(
                       
                       # Title
-                      title = "Motor Trend Cars",
+                      title = "FAO Capture Production",
                       
                       # emLab logo
                       tags$li(
@@ -79,7 +81,7 @@ shinyUI(
                           
                           ### Tab 1 content ---
                           tabItem(tabName = "tab-1",
-                                  Tab1()
+                                  Tab1(country_choices)
                           )
                           
                       ) # /tabItems
