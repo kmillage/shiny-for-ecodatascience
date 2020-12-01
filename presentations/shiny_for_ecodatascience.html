@@ -50,22 +50,16 @@ class: center, middle
 
 - The Basics: Brief review of essential Shiny functions and some tips to make your reactive programming more efficient;
 
---
-
 - Appearance &amp; Organization (`shinydashboard` + more): Keeping things organized;
 
---
-
 - (gg)`plotly`: Making your (already awesome) `ggplot` figures more awesome; 
-
---
 
 - `leaflet`: Interactive maps! 
 
 ---
 class: inverse, center, middle
 
-# The Basics
+# Section 1: The Basics
 
 ---
 
@@ -79,15 +73,11 @@ You will then be asked to name your app, determine whether the app should be bui
 
 **Does the file format matter?** 
 
---
-
 &gt; Ultimately, no. They both yield the same outcome.   
 
 --
 
 **Why would I pick one over the other?**
-
---
 
 &gt; Ease of code management (and debugging). *Unless the app is going to be limited to a single figure and 1 or 2 widgets, **the two file format is going to be easier to manage***. 
 
@@ -142,11 +132,7 @@ You'll predominately use three types of functions to define your user-interface:
 
 - Structural UI functions (layout &amp; containers);
 
---
-
 - Widgets (input functions);
-
---
 
 - Output functions.
 
@@ -240,25 +226,19 @@ You'll predominately use four types of functions to define your server logic:
 
 - Reactive values;
 
---
-
 - Reactive expressions;
-
---
 
 - Observers;
 
---
-
 - Rendering functions.
-
---
 
 ** The key differences between these functions are their execution strategies (eager or lazy) and whether they yield a result or have a value **
 
 ---
 # `ui.R` / **`server.R`**
 ## Reactive Values
+
+--
 
 `reactiveValues()`
 
@@ -268,6 +248,8 @@ This function returns an object for storing reactive values - think of this as a
 # `ui.R` / **`server.R`**
 ## Reactive Expressions
 
+--
+
 `reactive()` and `eventReactive()`
 
 These two functions create expressions whose results will change over time. Similar to the previous class, whenever the result of a reactive expression changes, any other reactive expressions that recently called it are marked as "invalidated". 
@@ -276,6 +258,8 @@ These two functions create expressions whose results will change over time. Simi
 # `ui.R` / **`server.R`**
 ## Observers
 
+--
+
 `observe()` and `observeEvent()`
 
 These two functions can read reactive values and call reactive expressions, and will automatically re-execute when their dependencies change. However, they do not yield a result, and therefore only useful for their side effects.    
@@ -283,6 +267,8 @@ These two functions can read reactive values and call reactive expressions, and 
 ---
 # `ui.R` / **`server.R`**
 ## Rendering Functions
+
+--
 
 `renderPlot()`, `renderText()`, `renderUI()`, `renderPrint()`, `renderImage()`, `renderTable()`, `renderDataTable()`
 
@@ -334,7 +320,7 @@ shinyServer(function(input, output) {
 ```
 
 ---
-class: inverse, center, middle
+class: center, middle
 
 # Example: 01-basics
 
@@ -367,17 +353,32 @@ Luckily, there are some nice packages that will make your Shiny apps look nicer 
 ---
 # `shinydashboard`
 
-[NEED]
+As the name implies, this package is intended to allow you to turn your Shiny apps into dashboards. However, I've found the base `shinydashboard` layout to be functional for almost any context. The website for [`shinydashboard`](https://rstudio.github.io/shinydashboard/index.html) provides a nice guide if you're just getting started. 
+
+The two main classes of functions from this package I want to highlight: 
+
+- Structural UI functions (`dashboardPage()`, `dashboardHeader()`, `dashboardSidebar()`, `dashboardBody()`)
+
+- Boxes (`box()`, `tabBox()`, `infoBox()`/`infoBoxOutput()`, `valueBox`/`valueBoxOutput()`)
 
 ---
 # `shinyjs`
 
-[NEED]
+This package was designed to allow users to easily implement common `JavaScript` operations in their Shiny apps without having to learn `JavaScript`. The website for [`shinyjs`](https://deanattali.com/shinyjs/) provides a nice guide if you're just getting started. 
+
+Cool things `shinyjs` allows you to do: 
+- Hide (or show) elements
+- Disable (or enable) inputs
+- Reset inputs back to their original values
 
 ---
 # `shinyWidgets`
 
-[NEED]
+Who doesn't want more widget options!? There are other packages out there offering additional widgets for `shiny`, but (in my opinion), this one is the best. Definitely check out the gallery of [`shinyWidgets`](http://shinyapps.dreamrs.fr/shinyWidgets/) to see all of the widgets available with this package (and to see a good example of an app built using `shinydashboard`!). 
+Some favorite widgets of mine: 
+- `switchInput()`
+- `materialSwitch()`
+- `radioGroupButtons()`
 
 ---
 # Custom Stylesheets
@@ -387,7 +388,7 @@ If you really want to change up the appearance of your Shiny app, you can use CS
 [Rstudio](https://shiny.rstudio.com/articles/css.html) and [R-bloggers](https://www.r-bloggers.com/2019/08/how-to-use-css-to-style-your-r-shiny-projects/) have good articles on how to add custom CSS to your app. 
 
 ---
-class: inverse, center, middle
+class: center, middle
 
 # Example: 02-layouts
 
@@ -421,11 +422,11 @@ p &lt;- ggplot(data = dat, aes(x = State, y = Rate, fill = Crime))+
 ggplotly(p)
 ```
 
-<div id="htmlwidget-168b0cb77e3e5c92ab2f" style="width:100%;height:324px;" class="plotly html-widget"></div>
-<script type="application/json" data-for="htmlwidget-168b0cb77e3e5c92ab2f">{"x":{"data":[{"orientation":"h","width":[0.9,0.9,0.9,0.9,0.9,0.9,0.9,0.899999999999999,0.899999999999999,0.899999999999999],"base":[92.4,102.5,119.1,78.3,140.6,124.6,91.4,93.7,127.3,103.2],"x":[236,263,294,190,276,204,110,238,335,211],"y":[1,2,3,4,5,6,7,8,9,10],"text":["State: Alabama<br />Rate: 236.0<br />Crime: Assault","State: Alaska<br />Rate: 263.0<br />Crime: Assault","State: Arizona<br />Rate: 294.0<br />Crime: Assault","State: Arkansas<br />Rate: 190.0<br />Crime: Assault","State: California<br />Rate: 276.0<br />Crime: Assault","State: Colorado<br />Rate: 204.0<br />Crime: Assault","State: Connecticut<br />Rate: 110.0<br />Crime: Assault","State: Delaware<br />Rate: 238.0<br />Crime: Assault","State: Florida<br />Rate: 335.0<br />Crime: Assault","State: Georgia<br />Rate: 211.0<br />Crime: Assault"],"type":"bar","marker":{"autocolorscale":false,"color":"rgba(248,118,109,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"Assault","legendgroup":"Assault","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"h","width":[0.9,0.9,0.9,0.9,0.9,0.9,0.9,0.899999999999999,0.899999999999999,0.899999999999999],"base":[79.2,92.5,111,69.5,131.6,116.7,88.1,87.8,111.9,85.8],"x":[13.2,10,8.09999999999999,8.8,9,7.90000000000001,3.30000000000001,5.90000000000001,15.4,17.4],"y":[1,2,3,4,5,6,7,8,9,10],"text":["State: Alabama<br />Rate:  13.2<br />Crime: Murder","State: Alaska<br />Rate:  10.0<br />Crime: Murder","State: Arizona<br />Rate:   8.1<br />Crime: Murder","State: Arkansas<br />Rate:   8.8<br />Crime: Murder","State: California<br />Rate:   9.0<br />Crime: Murder","State: Colorado<br />Rate:   7.9<br />Crime: Murder","State: Connecticut<br />Rate:   3.3<br />Crime: Murder","State: Delaware<br />Rate:   5.9<br />Crime: Murder","State: Florida<br />Rate:  15.4<br />Crime: Murder","State: Georgia<br />Rate:  17.4<br />Crime: Murder"],"type":"bar","marker":{"autocolorscale":false,"color":"rgba(124,174,0,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"Murder","legendgroup":"Murder","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"h","width":[0.9,0.9,0.9,0.9,0.9,0.9,0.9,0.899999999999999,0.899999999999999,0.899999999999999],"base":[58,48,80,50,91,78,77,72,80,60],"x":[21.2,44.5,31,19.5,40.6,38.7,11.1,15.8,31.9,25.8],"y":[1,2,3,4,5,6,7,8,9,10],"text":["State: Alabama<br />Rate:  21.2<br />Crime: Rape","State: Alaska<br />Rate:  44.5<br />Crime: Rape","State: Arizona<br />Rate:  31.0<br />Crime: Rape","State: Arkansas<br />Rate:  19.5<br />Crime: Rape","State: California<br />Rate:  40.6<br />Crime: Rape","State: Colorado<br />Rate:  38.7<br />Crime: Rape","State: Connecticut<br />Rate:  11.1<br />Crime: Rape","State: Delaware<br />Rate:  15.8<br />Crime: Rape","State: Florida<br />Rate:  31.9<br />Crime: Rape","State: Georgia<br />Rate:  25.8<br />Crime: Rape"],"type":"bar","marker":{"autocolorscale":false,"color":"rgba(0,191,196,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"Rape","legendgroup":"Rape","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"h","width":[0.9,0.9,0.9,0.9,0.9,0.9,0.9,0.899999999999999,0.899999999999999,0.899999999999999],"base":[0,0,0,0,0,0,0,0,0,0],"x":[58,48,80,50,91,78,77,72,80,60],"y":[1,2,3,4,5,6,7,8,9,10],"text":["State: Alabama<br />Rate:  58.0<br />Crime: UrbanPop","State: Alaska<br />Rate:  48.0<br />Crime: UrbanPop","State: Arizona<br />Rate:  80.0<br />Crime: UrbanPop","State: Arkansas<br />Rate:  50.0<br />Crime: UrbanPop","State: California<br />Rate:  91.0<br />Crime: UrbanPop","State: Colorado<br />Rate:  78.0<br />Crime: UrbanPop","State: Connecticut<br />Rate:  77.0<br />Crime: UrbanPop","State: Delaware<br />Rate:  72.0<br />Crime: UrbanPop","State: Florida<br />Rate:  80.0<br />Crime: UrbanPop","State: Georgia<br />Rate:  60.0<br />Crime: UrbanPop"],"type":"bar","marker":{"autocolorscale":false,"color":"rgba(199,124,255,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"UrbanPop","legendgroup":"UrbanPop","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":27.3647894469812,"r":7.30593607305936,"b":41.3191273465246,"l":89.8630136986302},"plot_bgcolor":"rgba(255,255,255,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-23.115,485.415],"tickmode":"array","ticktext":["0","100","200","300","400"],"tickvals":[0,100,200,300,400],"categoryorder":"array","categoryarray":["0","100","200","300","400"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"y","title":{"text":"Rate","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[0.4,10.6],"tickmode":"array","ticktext":["Alabama","Alaska","Arizona","Arkansas","California","Colorado","Connecticut","Delaware","Florida","Georgia"],"tickvals":[1,2,3,4,5,6,7,8,9,10],"categoryorder":"array","categoryarray":["Alabama","Alaska","Arizona","Arkansas","California","Colorado","Connecticut","Delaware","Florida","Georgia"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"x","title":{"text":"State","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":"transparent","line":{"color":"rgba(51,51,51,1)","width":0.66417600664176,"linetype":"solid"},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.88976377952756,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","showSendToCloud":false},"source":"A","attrs":{"10b4e11b8376c":{"x":{},"y":{},"fill":{},"type":"bar"}},"cur_data":"10b4e11b8376c","visdat":{"10b4e11b8376c":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-130015ae196f57728ec5" style="width:100%;height:324px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-130015ae196f57728ec5">{"x":{"data":[{"orientation":"h","width":[0.9,0.9,0.9,0.9,0.9,0.9,0.9,0.899999999999999,0.899999999999999,0.899999999999999],"base":[92.4,102.5,119.1,78.3,140.6,124.6,91.4,93.7,127.3,103.2],"x":[236,263,294,190,276,204,110,238,335,211],"y":[1,2,3,4,5,6,7,8,9,10],"text":["State: Alabama<br />Rate: 236.0<br />Crime: Assault","State: Alaska<br />Rate: 263.0<br />Crime: Assault","State: Arizona<br />Rate: 294.0<br />Crime: Assault","State: Arkansas<br />Rate: 190.0<br />Crime: Assault","State: California<br />Rate: 276.0<br />Crime: Assault","State: Colorado<br />Rate: 204.0<br />Crime: Assault","State: Connecticut<br />Rate: 110.0<br />Crime: Assault","State: Delaware<br />Rate: 238.0<br />Crime: Assault","State: Florida<br />Rate: 335.0<br />Crime: Assault","State: Georgia<br />Rate: 211.0<br />Crime: Assault"],"type":"bar","marker":{"autocolorscale":false,"color":"rgba(248,118,109,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"Assault","legendgroup":"Assault","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"h","width":[0.9,0.9,0.9,0.9,0.9,0.9,0.9,0.899999999999999,0.899999999999999,0.899999999999999],"base":[79.2,92.5,111,69.5,131.6,116.7,88.1,87.8,111.9,85.8],"x":[13.2,10,8.09999999999999,8.8,9,7.90000000000001,3.30000000000001,5.90000000000001,15.4,17.4],"y":[1,2,3,4,5,6,7,8,9,10],"text":["State: Alabama<br />Rate:  13.2<br />Crime: Murder","State: Alaska<br />Rate:  10.0<br />Crime: Murder","State: Arizona<br />Rate:   8.1<br />Crime: Murder","State: Arkansas<br />Rate:   8.8<br />Crime: Murder","State: California<br />Rate:   9.0<br />Crime: Murder","State: Colorado<br />Rate:   7.9<br />Crime: Murder","State: Connecticut<br />Rate:   3.3<br />Crime: Murder","State: Delaware<br />Rate:   5.9<br />Crime: Murder","State: Florida<br />Rate:  15.4<br />Crime: Murder","State: Georgia<br />Rate:  17.4<br />Crime: Murder"],"type":"bar","marker":{"autocolorscale":false,"color":"rgba(124,174,0,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"Murder","legendgroup":"Murder","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"h","width":[0.9,0.9,0.9,0.9,0.9,0.9,0.9,0.899999999999999,0.899999999999999,0.899999999999999],"base":[58,48,80,50,91,78,77,72,80,60],"x":[21.2,44.5,31,19.5,40.6,38.7,11.1,15.8,31.9,25.8],"y":[1,2,3,4,5,6,7,8,9,10],"text":["State: Alabama<br />Rate:  21.2<br />Crime: Rape","State: Alaska<br />Rate:  44.5<br />Crime: Rape","State: Arizona<br />Rate:  31.0<br />Crime: Rape","State: Arkansas<br />Rate:  19.5<br />Crime: Rape","State: California<br />Rate:  40.6<br />Crime: Rape","State: Colorado<br />Rate:  38.7<br />Crime: Rape","State: Connecticut<br />Rate:  11.1<br />Crime: Rape","State: Delaware<br />Rate:  15.8<br />Crime: Rape","State: Florida<br />Rate:  31.9<br />Crime: Rape","State: Georgia<br />Rate:  25.8<br />Crime: Rape"],"type":"bar","marker":{"autocolorscale":false,"color":"rgba(0,191,196,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"Rape","legendgroup":"Rape","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"h","width":[0.9,0.9,0.9,0.9,0.9,0.9,0.9,0.899999999999999,0.899999999999999,0.899999999999999],"base":[0,0,0,0,0,0,0,0,0,0],"x":[58,48,80,50,91,78,77,72,80,60],"y":[1,2,3,4,5,6,7,8,9,10],"text":["State: Alabama<br />Rate:  58.0<br />Crime: UrbanPop","State: Alaska<br />Rate:  48.0<br />Crime: UrbanPop","State: Arizona<br />Rate:  80.0<br />Crime: UrbanPop","State: Arkansas<br />Rate:  50.0<br />Crime: UrbanPop","State: California<br />Rate:  91.0<br />Crime: UrbanPop","State: Colorado<br />Rate:  78.0<br />Crime: UrbanPop","State: Connecticut<br />Rate:  77.0<br />Crime: UrbanPop","State: Delaware<br />Rate:  72.0<br />Crime: UrbanPop","State: Florida<br />Rate:  80.0<br />Crime: UrbanPop","State: Georgia<br />Rate:  60.0<br />Crime: UrbanPop"],"type":"bar","marker":{"autocolorscale":false,"color":"rgba(199,124,255,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"UrbanPop","legendgroup":"UrbanPop","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":27.3647894469812,"r":7.30593607305936,"b":41.3191273465246,"l":89.8630136986302},"plot_bgcolor":"rgba(255,255,255,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-23.115,485.415],"tickmode":"array","ticktext":["0","100","200","300","400"],"tickvals":[0,100,200,300,400],"categoryorder":"array","categoryarray":["0","100","200","300","400"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"y","title":{"text":"Rate","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[0.4,10.6],"tickmode":"array","ticktext":["Alabama","Alaska","Arizona","Arkansas","California","Colorado","Connecticut","Delaware","Florida","Georgia"],"tickvals":[1,2,3,4,5,6,7,8,9,10],"categoryorder":"array","categoryarray":["Alabama","Alaska","Arizona","Arkansas","California","Colorado","Connecticut","Delaware","Florida","Georgia"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"x","title":{"text":"State","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":"transparent","line":{"color":"rgba(51,51,51,1)","width":0.66417600664176,"linetype":"solid"},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.88976377952756,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","showSendToCloud":false},"source":"A","attrs":{"2a837e784e94":{"x":{},"y":{},"fill":{},"type":"bar"}},"cur_data":"2a837e784e94","visdat":{"2a837e784e94":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 
 ---
-class: inverse, center, middle
+class: center, middle
 
 # Example: 03-ggplotly
 
@@ -456,11 +457,11 @@ leaflet() %&gt;%
   addMarkers(-119.84230, 34.41251, popup = "Marine Science")
 ```
 
-<div id="htmlwidget-abc8e94323d0cf2c008f" style="width:100%;height:288px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-abc8e94323d0cf2c008f">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addMarkers","args":[34.41251,-119.8423,null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},"Marine Science",null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"setView":[[34.413489,-119.848965],15,[]],"limits":{"lat":[34.41251,34.41251],"lng":[-119.8423,-119.8423]}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-18576e522d7795b7b09b" style="width:100%;height:288px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-18576e522d7795b7b09b">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addMarkers","args":[34.41251,-119.8423,null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},"Marine Science",null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"setView":[[34.413489,-119.848965],15,[]],"limits":{"lat":[34.41251,34.41251],"lng":[-119.8423,-119.8423]}},"evals":[],"jsHooks":[]}</script>
 
 ---
-class: inverse, center, middle
+class: center, middle
 
 # Example: 04-leaflet
 

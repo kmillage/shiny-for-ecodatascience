@@ -31,15 +31,9 @@ class: center, middle
 
 - The Basics: Brief review of essential Shiny functions and some tips to make your reactive programming more efficient;
 
---
-
 - Appearance & Organization (`shinydashboard` + more): Keeping things organized;
 
---
-
 - (gg)`plotly`: Making your (already awesome) `ggplot` figures more awesome; 
-
---
 
 - `leaflet`: Interactive maps! 
 
@@ -60,15 +54,11 @@ You will then be asked to name your app, determine whether the app should be bui
 
 **Does the file format matter?** 
 
---
-
 > Ultimately, no. They both yield the same outcome.   
 
 --
 
 **Why would I pick one over the other?**
-
---
 
 > Ease of code management (and debugging). *Unless the app is going to be limited to a single figure and 1 or 2 widgets, **the two file format is going to be easier to manage***. 
 
@@ -123,11 +113,7 @@ You'll predominately use three types of functions to define your user-interface:
 
 - Structural UI functions (layout & containers);
 
---
-
 - Widgets (input functions);
-
---
 
 - Output functions.
 
@@ -220,25 +206,19 @@ You'll predominately use four types of functions to define your server logic:
 
 - Reactive values;
 
---
-
 - Reactive expressions;
-
---
 
 - Observers;
 
---
-
 - Rendering functions.
-
---
 
 ** The key differences between these functions are their execution strategies (eager or lazy) and whether they yield a result or have a value **
 
 ---
 # `ui.R` / **`server.R`**
 ## Reactive Values
+
+--
 
 `reactiveValues()`
 
@@ -248,6 +228,8 @@ This function returns an object for storing reactive values - think of this as a
 # `ui.R` / **`server.R`**
 ## Reactive Expressions
 
+--
+
 `reactive()` and `eventReactive()`
 
 These two functions create expressions whose results will change over time. Similar to the previous class, whenever the result of a reactive expression changes, any other reactive expressions that recently called it are marked as "invalidated". 
@@ -256,6 +238,8 @@ These two functions create expressions whose results will change over time. Simi
 # `ui.R` / **`server.R`**
 ## Observers
 
+--
+
 `observe()` and `observeEvent()`
 
 These two functions can read reactive values and call reactive expressions, and will automatically re-execute when their dependencies change. However, they do not yield a result, and therefore only useful for their side effects.    
@@ -263,6 +247,8 @@ These two functions can read reactive values and call reactive expressions, and 
 ---
 # `ui.R` / **`server.R`**
 ## Rendering Functions
+
+--
 
 `renderPlot()`, `renderText()`, `renderUI()`, `renderPrint()`, `renderImage()`, `renderTable()`, `renderDataTable()`
 
@@ -334,29 +320,41 @@ Let's face it - the basic `shiny` layouts are boring and they don't look very ni
 --
 Luckily, there are some nice packages that will make your Shiny apps look nicer and be easier to use without having to learn more coding languages. There are MANY packages out there for shiny, but I've found a lot of them to be underwhelming. However, I want to highlight the three that I find myself using in almost every app I make. 
 
---
 - `shinydashboard`
 
---
 - `shinyjs`
 
---
 - `shinyWidgets`
 
 ---
 # `shinydashboard`
 
-[NEED]
+As the name implies, this package is intended to allow you to turn your Shiny apps into dashboards. However, I've found the base `shinydashboard` layout to be functional for almost any context. The website for [`shinydashboard`](https://rstudio.github.io/shinydashboard/index.html) provides a nice guide if you're just getting started. 
+
+The two main classes of functions from this package I want to highlight: 
+
+- Structural UI functions (`dashboardPage()`, `dashboardHeader()`, `dashboardSidebar()`, `dashboardBody()`)
+
+- Boxes (`box()`, `tabBox()`, `infoBox()`/`infoBoxOutput()`, `valueBox`/`valueBoxOutput()`)
 
 ---
 # `shinyjs`
 
-[NEED]
+This package was designed to allow users to easily implement common `JavaScript` operations in their Shiny apps without having to learn `JavaScript`. The website for [`shinyjs`](https://deanattali.com/shinyjs/) provides a nice guide if you're just getting started. 
+
+Cool things `shinyjs` allows you to do: 
+- Hide (or show) elements
+- Disable (or enable) inputs
+- Reset inputs back to their original values
 
 ---
 # `shinyWidgets`
 
-[NEED]
+Who doesn't want more widget options!? There are other packages out there offering additional widgets for `shiny`, but (in my opinion), this one is the best. Definitely check out the gallery of [`shinyWidgets`](http://shinyapps.dreamrs.fr/shinyWidgets/) to see all of the widgets available with this package (and to see a good example of an app built using `shinydashboard`!). 
+Some favorite widgets of mine: 
+- `switchInput()`
+- `materialSwitch()`
+- `radioGroupButtons()`
 
 ---
 # Custom Stylesheets
