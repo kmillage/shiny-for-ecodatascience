@@ -41,7 +41,7 @@ shinyUI(
                   dashboardHeader(
                       
                       # Title
-                      title = "Motor Trend Car Road Tests",
+                      title = "Motor Trend Cars",
                       
                       # emLab logo
                       tags$li(

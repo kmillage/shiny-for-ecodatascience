@@ -115,7 +115,11 @@ Tab3 <- function(){
              
       )
       
-    )
+    ),
+    
+    tags$br(),
+    
+    tags$i("These widgets don't actually do anything in this app - They're here just to show you what they look like! For the full array of widgets in the `shinyWidgets` package, go ", tags$a(href = 'http://shinyapps.dreamrs.fr/shinyWidgets/', "here"), ".")
     
 
   )

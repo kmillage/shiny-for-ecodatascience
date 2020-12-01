@@ -87,4 +87,13 @@ shinyServer(function(input, output, session) {
 
     })
     
+    ### ----------------------------------
+    ### Tab 2 ----------------------------
+    ### ----------------------------------
+    
+    observe({
+        shinyjs::onclick("toggle_advanced",
+                         shinyjs::toggle(id = "advanced", anim = FALSE))
+    })
+    
 })
