@@ -1,40 +1,91 @@
 #
-# Shiny app #4: Leaflet
+# This is the user-interface definition of a Shiny web application. You can
+# run the application by clicking 'Run App' above.
 #
-# This is the user-interface for our final Shiny app.
 #
-# To run this application, click the "Run App" button above, or type the following into the console: runApp("01-basics", display.mode = "showcase")
-#
+# shiny::runApp("03-ggplotly", display.mode = "showcase")
 
 ### ----------------------------------
 ### Initialize app -------------------
 ### ----------------------------------
 
+library(tidyverse)
 library(shiny)
+library(shinydashboard)
+library(plotly)
+
+# Source file that loads/wrangles data and text
+source("00_initialize_app.R")
+
+# The content for each tab is stored in a separate file. Source all .R files in the current directory that start with "ui_":
+sapply(list.files(
+    pattern = "^ui_.*\\.R$",
+    path = ".",
+    full.names = TRUE
+),
+source)
 
 ### -----------------------------------
 ### User Interface (UI) ---------------
 ### -----------------------------------
 
 # Define UI for application that draws a histogram
-shinyUI(fluidPage(
-
-    # Application title
-    titlePanel("Shiny App #4: Leaflet"),
-
-    # Sidebar with a slider input for number of bins
-    sidebarLayout(
-        sidebarPanel(
-            sliderInput("bins",
-                        "Number of bins:",
-                        min = 1,
-                        max = 50,
-                        value = 30)
-        ),
-
-        # Show a plot of the generated distribution
-        mainPanel(
-            plotOutput("distPlot")
-        )
-    )
-))
+shinyUI(
+    
+    dashboardPage(skin = "blue",
+                  
+                  ### Header ---------------------
+                  dashboardHeader(
+                      
+                      # Title
+                      title = "Motor Trend Cars",
+                      
+                      # emLab logo
+                      tags$li(
+                          class = "dropdown",
+                          a(href = 'http://emlab.msi.ucsb.edu/',
+                            img(src = 'emlab_logo_horizontal_w.png', title = "emLab", height = "30px"), 
+                            style = "padding-top:10px; padding-bottom:10px;"
+                          ) # /a
+                      ) # /tags$li
+                      
+                  ), # /dashboardHeader
+                  
+                  ### Sidebar menu ----------------------
+                  dashboardSidebar(
+                      
+                      # Disable sidebar
+                      disable = T,
+                      
+                      # Menu container
+                      sidebarMenu(
+                          
+                          # Variable name for selected menuItem
+                          id = "menu-items",
+                          
+                          ### Tab 1 menu link ---
+                          menuItem("tab 1", 
+                                   tabName = "tab-1", 
+                                   selected = TRUE)
+                          
+                      ) # /sidebarMenu
+                  ), #/dashboardSidebar
+                  
+                  ### Main panel content ----------------------
+                  dashboardBody(
+                      
+                      # Tabs
+                      tabItems(
+                          
+                          ### Tab 1 content ---
+                          tabItem(tabName = "tab-1",
+                                  Tab1()
+                          )
+                          
+                      ) # /tabItems
+                      
+                  ) # /dashboardBody
+                  
+    ) # /dashboardPage
+) # /shinyUI
+ 
