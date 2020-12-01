@@ -70,7 +70,7 @@ shinyUI(
                           id = "menu-items",
                           
                           ### Tab 1 menu link ---
-                          menuItem("Boxes!", 
+                          menuItem("shinydashboard", 
                                    tabName = "tab-1", 
                                    selected = TRUE),
                           
@@ -80,7 +80,7 @@ shinyUI(
                                    selected = FALSE),
                           
                           ### Tab 3 menu link ---
-                          menuItem("Pretty Widgets",
+                          menuItem("shinyWidgets",
                                    tabName = "tab-3",
                                    selected = FALSE)
                           
