@@ -30,8 +30,8 @@ shinyServer(function(input, output, session) {
     output$value_box_2 <- renderValueBox({
         
         valueBox(
-            value = round(runif(1, min = 456, max = 1256)),
-            subtitle = "Cars Tested\n(Actually random, but you get the idea...)",
+            value = round(runif(1, min = 52, max = 345)),
+            subtitle = "Cars Driven",
             icon = icon("car"),
             color = "aqua"
         )
@@ -40,17 +40,26 @@ shinyServer(function(input, output, session) {
     ### Plot 1 
     output$plot_1 <- renderPlot({
         
+        selected_car_dat <- dat %>%
+            dplyr::filter(Name == input$w_select_car)
+        
         ggplot(dat, aes(x = mpg, color = cyl, fill = cyl, group = cyl))+
             geom_density()+
-            theme_classic()
+            geom_vline(xintercept = selected_car_dat$mpg, color = "red")+
+            theme_classic()+
+            scale_y_continuous(expand = c(0,0))
         
     })
     
     ### Plot 2 
     output$plot_2 <- renderPlot({
         
+        selected_car_dat <- dat %>%
+            dplyr::filter(Name == input$w_select_car)
+        
         ggplot(dat, aes(x = hp, y = mpg, color = cyl, fill = cyl))+
             geom_point()+
+            geom_point(data = selected_car_dat, fill = NA, color = "red", size = 2, shape = 21)+
             theme_classic()
         
     })
@@ -68,7 +77,7 @@ shinyServer(function(input, output, session) {
             
             column(12, align = "center",
                    
-                   tags$img(src = paste0('./cars/', needed_file_name), width = "350px")
+                   tags$img(src = paste0('./cars/', needed_file_name), height = '240px')
             )
             
         }else {

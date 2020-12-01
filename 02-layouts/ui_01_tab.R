@@ -38,8 +38,10 @@ Tab1 <- function(){
       box(width = 12,
           solidHeader = T,
           title = "Horsepower vs. MPG",
+          height = 300,
           
-          plotOutput("plot_2"))
+          plotOutput("plot_2", height = 250)
+      )
       
     ),
     
@@ -47,22 +49,22 @@ Tab1 <- function(){
    fluidRow(
      
      # plot
-     box(width = 8,
-         height = 400,
+     box(width = 6,
+         height = 300,
          status = "warning",
          title = "MPG by Number of Cylinders",
          
-         plotOutput("plot_1", height = 370)
+         plotOutput("plot_1", height = 250)
          
      ),
      
      # widgets
-     box(width = 4,
-         height = 400,
+     box(width = 6,
+         height = 300,
          title = "Picture",
          background = "black",
          
-         uiOutput("car_image")
+         uiOutput("car_image", width = "auto")
      )
 
    )
