@@ -1,7 +1,7 @@
 ---
 title: "Shiny for R: Making your apps more efficient and more effective"
-subtitle: "EcoDataScience session"
-institute: "emLab"
+subtitle: "EcoDataScience Lunch Session"
+institute: "UCSB - emLab"
 author: "Kat Millage"
 date: "2020/12/1"
 output:
@@ -46,7 +46,7 @@ class: center, middle
 ---
 class: inverse, center, middle
 
-# The Basics
+# Section 1: The Basics
 
 ---
 
@@ -313,7 +313,7 @@ shinyServer(function(input, output) {
 ```
 
 ---
-class: inverse, center, middle
+class: center, middle
 
 # Example: 01-basics
 
@@ -366,7 +366,7 @@ If you really want to change up the appearance of your Shiny app, you can use CS
 [Rstudio](https://shiny.rstudio.com/articles/css.html) and [R-bloggers](https://www.r-bloggers.com/2019/08/how-to-use-css-to-style-your-r-shiny-projects/) have good articles on how to add custom CSS to your app. 
 
 ---
-class: inverse, center, middle
+class: center, middle
 
 # Example: 02-layouts
 
@@ -405,7 +405,7 @@ ggplotly(p)
 ```
 
 ---
-class: inverse, center, middle
+class: center, middle
 
 # Example: 03-ggplotly
 
@@ -436,7 +436,7 @@ leaflet() %>%
 ```
 
 ---
-class: inverse, center, middle
+class: center, middle
 
 # Example: 04-leaflet
 
