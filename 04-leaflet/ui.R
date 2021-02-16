@@ -2,8 +2,7 @@
 # This is the user-interface definition of a Shiny web application. You can
 # run the application by clicking 'Run App' above.
 #
-#
-# shiny::runApp("03-ggplotly", display.mode = "showcase")
+# shiny::runApp("04-leaflet", display.mode = "showcase")
 
 ### ----------------------------------
 ### Initialize app -------------------

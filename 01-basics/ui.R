@@ -3,7 +3,7 @@
 #
 # This is the user-interface for our basic Shiny app.
 #
-# To run this application, click the "Run App" button above, or type the following into the console: runApp("01-basics", display.mode = "showcase")
+# shiny::runApp("01-basics", display.mode = "showcase")
 #
 
 ### ----------------------------------
