@@ -19,10 +19,11 @@ library(sf) # spatial features
 library(rnaturalearth) # maps
 library(rnaturalearthdata) # map data
 ```
+The slides for my presentation to EcoDataScience on February 16, 2021 are [here](https://www.katmillage.com/blog/misc-files/shiny_for_ecodatascience.html#1).
 
 This goal of this talk is to provide a *short* introduction to Shiny for R, and then to highlight some supplemental packages that I have found to helpful for building effective interactive applications. 
 
-This presentation will be roughly divided into four parts: 
+This workshop will be roughly divided into four parts: 
 
 1. The Basics: Brief review of essential Shiny functions and some tips to make your reactive programming more efficient;
 
